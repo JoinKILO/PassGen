@@ -1,9 +1,12 @@
 import customtkinter as ctk
-from PIL import Image
+from random import choice
+import string
 
 class MainWidow(ctk.CTk):
     
-    # can_resize = False
+    can_resize = False
+    alphabet = alphabet = string.ascii_lowercase + string.ascii_uppercase + "0123456789#_$*"
+    password = ""
     
     def __init__(self):
         super().__init__()
@@ -36,11 +39,11 @@ class MainWidow(ctk.CTk):
         self.tab_contact.place(x=5, y=5)
         
         # # # Buttons and label # # #
-        self.btn_generate = ctk.CTkButton(master=self, text="Генерировать пароль", corner_radius=15)
+        self.btn_generate = ctk.CTkButton(master=self, text="Генерировать пароль", corner_radius=15, command=self.on_generate_pressed)
         self.btn_copy = ctk.CTkButton(master=self, text="Скопировать пароль", corner_radius=15)
-        self.password_label = ctk.CTkLabel(master=self, text="Нажмите на Генерировать пароль")
+        self.password_label = ctk.CTkLabel(master=self, text="0000000", bg_color="#000080")
         
-        self.password_label.place(x=480, y=370)
+        self.password_label.place(x=560, y=370)
         self.btn_copy.place(x=590, y=420)
         self.btn_generate.place(x=420, y=420)
         
@@ -51,4 +54,9 @@ class MainWidow(ctk.CTk):
         else:
             self.can_resize = False
         self.resizable(width=self.can_resize, height=self.can_resize)
-        
+    
+    def on_generate_pressed(self):
+        self.password = ""
+        for i in range(8):
+            self.password += choice(self.alphabet)
+        self.password_label.configure(True, text=self.password)

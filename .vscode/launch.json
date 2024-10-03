@@ -8,7 +8,7 @@
 			"name": "Python Debugger: Main file",
 			"type": "debugpy",
 			"request": "launch",
-			"program": "C:/Users/User/Documents/vscode/PassGen/PassGen/app/main.py",
+			"program": "${file}",
 			"console": "integratedTerminal"
 		}
 	]

@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from PIL import Image
+import random
+import string
 from ui.main_window import MainWidow
 
 def main():
