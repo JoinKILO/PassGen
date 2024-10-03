@@ -55,6 +55,7 @@ class MainWidow(ctk.CTk):
             self.can_resize = False
         self.resizable(width=self.can_resize, height=self.can_resize)
     
+    
     def on_generate_pressed(self):
         self.password = ""
         for i in range(8):
