@@ -89,6 +89,3 @@ class MainWidow(ctk.CTk):
             self.length_password = 8
             self.length_password_entry.delete(0, "end")
     
-    
-        
-        
