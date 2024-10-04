@@ -1,9 +1,13 @@
 import customtkinter as ctk
-from PIL import Image
+import string as st
+from  random import choice
 
 class MainWidow(ctk.CTk):
     
-    # can_resize = False
+    can_resize = False
+    alphabet = st.ascii_lowercase + st.ascii_uppercase + "0123456789#$*_"
+    length_password = 8
+    password = ""
     
     def __init__(self):
         super().__init__()
@@ -35,20 +39,56 @@ class MainWidow(ctk.CTk):
         
         self.tab_contact.place(x=5, y=5)
         
-        # # # Buttons and label # # #
-        self.btn_generate = ctk.CTkButton(master=self, text="Генерировать пароль", corner_radius=15)
-        self.btn_copy = ctk.CTkButton(master=self, text="Скопировать пароль", corner_radius=15)
-        self.password_label = ctk.CTkLabel(master=self, text="Нажмите на Генерировать пароль")
+        # # # Buttons, entry and label in main frame # # #
+        self.main_frame = ctk.CTkFrame(master=self, corner_radius=4)
+        self.length_password_entry = ctk.CTkEntry(master=self.main_frame, placeholder_text="Длина пароля по умолчанию 8")
+        self.btn_generate = ctk.CTkButton(master=self.main_frame, text="Генерировать пароль", corner_radius=15, command=self.on_generate_pressed)
+        self.btn_copy = ctk.CTkButton(master=self.main_frame, text="Скопировать пароль", corner_radius=15, command=self.on_copy_pressed)
+        self.password_label = ctk.CTkLabel(master=self.main_frame, text="Нажмите на Генерировать пароль")
         
-        self.password_label.place(x=480, y=370)
-        self.btn_copy.place(x=590, y=420)
-        self.btn_generate.place(x=420, y=420)
-        
-        
+        # Place all objects in main frame
+        self.main_frame.place(x=480, y=380)
+        self.password_label.pack(anchor="n", padx=5, pady=2)
+        self.length_password_entry.pack(anchor="n", padx=5, pady=2)
+        self.btn_generate.pack(anchor="n", padx=5, pady=2)
+        self.btn_copy.pack(anchor="n", padx=5, pady=2)
+    
+    
+    # Allow resizable
     def on_switch_resizable_toggle(self):
         if self.switch_resizable.get() == 1:
             self.can_resize = True
         else:
             self.can_resize = False
         self.resizable(width=self.can_resize, height=self.can_resize)
+    
+    
+    # Generate password
+    def on_generate_pressed(self):
+        self.set_length_password()
+        self.password = ""
+        for i in range(self.length_password):
+            if self.length_password <= 30:
+                self.password += choice(self.alphabet)
+                self.password_label.configure(True, text=self.password)
+            else:
+                self.password_label.configure(True, text="Максимальное значение: 30")
+                break
+    
+    # Copy password to clipboard
+    def on_copy_pressed(self):
+        self.clipboard_clear() # Cleaning is necessary so that the password does't merge with the past
+        self.clipboard_append(self.password)
+    
+    
+    # Set length password
+    def set_length_password(self):
+        try:
+            self.length_password = int(self.length_password_entry.get())
+        except ValueError:
+            self.length_password = 8
+            self.length_password_entry.delete(0, "end")
+    
+    
+        
         
