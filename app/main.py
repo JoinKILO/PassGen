@@ -1,6 +1,4 @@
 import customtkinter as ctk
-import random
-import string
 from ui.main_window import MainWidow
 
 def main():

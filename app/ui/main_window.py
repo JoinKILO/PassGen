@@ -1,13 +1,16 @@
 import customtkinter as ctk
-import string as st
+import string
 from  random import choice
 
 class MainWidow(ctk.CTk):
     
     can_resize = False
-    alphabet = st.ascii_lowercase + st.ascii_uppercase + "0123456789#$*_"
+    alphabet = string.ascii_lowercase
     length_password = 8
     password = ""
+    is_special_symbols = False
+    is_digits = False
+    is_uppercase = False
     
     def __init__(self):
         super().__init__()
@@ -25,9 +28,17 @@ class MainWidow(ctk.CTk):
         
         self.tab_option.place(x=933, y=5)
         
-        # Switch option resize
+        # In option tab
         self.switch_resizable = ctk.CTkSwitch(master=self.tab_option.tab("Опции"), text="Разрешить изменение размера окна", command=self.on_switch_resizable_toggle)
-        self.switch_resizable.pack(anchor="w", padx=5, pady=5)
+        
+        self.switch_uppercase = ctk.CTkSwitch(master=self.tab_option.tab("Опции"), text="A-Z", command=self.update_option)
+        self.switch_digits = ctk.CTkSwitch(master=self.tab_option.tab("Опции"), text="0-9", command=self.update_option)
+        self.switch_special_symbols = ctk.CTkSwitch(master=self.tab_option.tab("Опции"), text="!-]", command=self.update_option)
+        
+        self.switch_resizable.pack(anchor="w")
+        self.switch_special_symbols.pack(anchor="w")
+        self.switch_digits.pack(anchor="w")
+        self.switch_uppercase.pack(anchor="w")
         
         self.resizable(width=False, height=False)
 
@@ -56,6 +67,7 @@ class MainWidow(ctk.CTk):
     
     # Allow resizable
     def on_switch_resizable_toggle(self):
+        
         if self.switch_resizable.get() == 1:
             self.can_resize = True
         else:
@@ -63,17 +75,32 @@ class MainWidow(ctk.CTk):
         self.resizable(width=self.can_resize, height=self.can_resize)
     
     
+    def update_option(self):
+        # Update settings
+        self.is_uppercase = self.switch_uppercase.get()
+        self.is_digits = self.switch_digits.get()
+        self.is_special_symbols = self.switch_special_symbols.get()
+    
+    
     # Generate password
     def on_generate_pressed(self):
+        alphabet = list(string.ascii_lowercase)
+
+        if self.is_uppercase:
+            alphabet.extend(string.ascii_uppercase)
+        if self.is_digits:
+            alphabet.extend(string.digits)
+        if self.is_special_symbols:
+            alphabet.extend("!@#$%^&*()-_=+[]{}|;:,.<>?")
+
         self.set_length_password()
-        self.password = ""
-        for i in range(self.length_password):
-            if self.length_password <= 30:
-                self.password += choice(self.alphabet)
-                self.password_label.configure(True, text=self.password)
-            else:
-                self.password_label.configure(True, text="Максимальное значение: 30")
-                break
+        self.password = "".join(choice(alphabet) for _ in range(self.length_password))
+
+        if self.length_password <= 30:
+            self.password_label.configure(text=self.password)
+        else:
+            self.password_label.configure(text="Максимальное значение: 30")
+    
     
     # Copy password to clipboard
     def on_copy_pressed(self):
