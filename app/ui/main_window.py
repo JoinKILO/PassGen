@@ -109,7 +109,7 @@ class MainWidow(ctk.CTk):
         self.clipboard_clear() # Cleaning is necessary so that the password does't merge with the past
         self.clipboard_append(self.password)
     
-    
+
     # Set length password
     def get_length_password(self) -> int:
         return round(int(self.slider_length_password.get()))
