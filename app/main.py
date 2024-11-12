@@ -1,4 +1,3 @@
-import customtkinter as ctk
 from ui.main_window import MainWidow
 
 def main():
