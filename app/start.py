@@ -18,4 +18,5 @@ class DefaultSettings:
             }
             with open(self.file_path, "w") as write:
                 json.dump(default_settings, write)
+print("Esda")
                 
