@@ -1,16 +1,19 @@
 import customtkinter as ctk
 from random import choice
+from app.start import DefaultSettings
 import string
 
 
 class MainWidow(ctk.CTk):
-    alphabet = string.ascii_lowercase
-    length_password = 8
-    password = ""
-    cache_history = ""
-    is_special_symbols = False
-    is_digits = False
-    is_uppercase = False
+    config = DefaultSettings()
+    settings: dict = config.get_settings()
+    alphabet: str = string.ascii_lowercase
+    length_password: int = 15
+    password: str = ""
+    cache_history: str = ""
+    is_special_symbols: bool = False
+    is_digits: bool = False
+    is_uppercase: bool = False
 
     def __init__(self) -> None:
         super().__init__()
@@ -18,11 +21,11 @@ class MainWidow(ctk.CTk):
         self.resizable(width=False, height=False)
 
         # # # Главное окно и вкладка опций # # #
-        ctk.set_default_color_theme("app/assets/themes/lavender.json")
-        self.iconbitmap("app/assets/images/icon.ico")
-        self.geometry("1240x920")
-        self.title("PASSGEN - Генератор паролей")
-        self._set_appearance_mode("dark")
+        ctk.set_default_color_theme(self.settings["theme"])
+        self.iconbitmap(self.settings["icon"])
+        self.geometry(self.settings["geometry"])
+        self.title(self.settings["title"])
+        self._set_appearance_mode(self.settings["appearance_mode"])
 
         # Создание вкладки опций
         self.tab_option = ctk.CTkTabview(master=self, height=900)
