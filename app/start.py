@@ -16,24 +16,28 @@ class DefaultSettings:
                 settings = json.load(read)
             
             if len(settings) < 5:
-                settings = self.reset_settings()
+                settings = self._reset_settings()
         else:
-            settings = self.reset_settings()
+            settings = self._reset_settings()
         
         return settings
             
     
     # Сброс значений по умолчанию
-    def reset_settings(self) -> dict:
+    def _reset_settings(self) -> dict:
         default_settings = {
-                "title": "PASSGEN - Генератор паролей",
-                "geometry": "1240x920",
-                "theme": "app/assets/themes/lavender.json",
-                "icon": "app/assets/images/icon.ico",
-                "appearance_mode": "dark"
-            }
-        with open(self.file_path, "w") as write:
-            json.dump(default_settings, write)
+            "title": "PASSGEN - Генератор паролей",
+            "geometry": "1240x920",
+            "theme": "app/assets/themes/lavender.json",
+            "icon": "app/assets/images/icon.ico",
+            "appearance_mode": "dark"
+        }
         
-        with open(self.file_path, "r") as read:
-            return json.load(read)
+        with open(self.file_path, "w") as write:
+            json.dump(default_settings, write, indent=4)  # Добавлено форматирование для читаемости
+
+        return default_settings
+    
+    
+    def get_file_path(self) -> str:
+        return self.file_path

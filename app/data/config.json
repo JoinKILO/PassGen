@@ -1,1 +1,7 @@
-{"title": "PASSGEN - \u0413\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u043f\u0430\u0440\u043e\u043b\u0435\u0439", "geometry": "1240x920", "theme": "app/assets/themes/lavender.json", "icon": "app/assets/images/icon.ico", "appearance_mode": "dark"}
+{
+    "title": "PASSGEN - \u0413\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u043f\u0430\u0440\u043e\u043b\u0435\u0439",
+    "geometry": "1240x920",
+    "theme": "app/assets/themes/marsh.json",
+    "icon": "app/assets/images/icon.ico",
+    "appearance_mode": "dark"
+}
