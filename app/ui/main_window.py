@@ -33,8 +33,6 @@ class MainWidow(ctk.CTk):
         self.tab_option = ctk.CTkTabview(master=self, height=900)
         self.tab_option.add("Опции")
 
-        self.tab_option.place(x=933, y=5)
-
         # На вкладке опций
         self.option_label = ctk.CTkLabel(
             master=self.tab_option.tab("Опции"), 
@@ -52,12 +50,6 @@ class MainWidow(ctk.CTk):
             master=self.tab_option.tab("Опции"), text="!-]", 
             command=self.update_option
         )
-
-        # Размещение на вкладке опции
-        self.option_label.pack(anchor="n")
-        self.switch_special_symbols.pack(anchor="w")
-        self.switch_digits.pack(anchor="w")
-        self.switch_uppercase.pack(anchor="w")
 
         # # # Вкладка смены темы # # #
         self.tab_theme = ctk.CTkTabview(master=self, height=400)
@@ -94,15 +86,6 @@ class MainWidow(ctk.CTk):
             text="Красная", 
             command=lambda: self.change_theme("red")
         )
-
-        # Размещение в табе theme
-        self.tab_theme.place(x=5, y=5)
-        self.violet_theme.pack(pady=5)
-        self.midnight_theme.pack(pady=5)
-        self.lavender_theme.pack(pady=5)
-        self.marsh_theme.pack(pady=5)
-        self.breeze_theme.pack(pady=5)
-        self.red_theme.pack(pady=5)
 
         self.restart_message = ctk.CTkLabel(
             master=self,
@@ -142,7 +125,25 @@ class MainWidow(ctk.CTk):
             text="Нажмите на Генерировать пароль"
         )
 
-        # Размещение всех объектов в главном фрейме
+        # # # Фрейм истории # # #
+        self.frame_history = ctk.CTkScrollableFrame(master=self, height=465, width=275)
+        self.label_history = ctk.CTkLabel(master=self.frame_history, text="")
+
+        # Размещение всех объектов в приложении
+        self.tab_option.place(x=933, y=5)
+        self.option_label.pack(anchor="n")
+        self.switch_special_symbols.pack(anchor="w")
+        self.switch_digits.pack(anchor="w")
+        self.switch_uppercase.pack(anchor="w")
+
+        self.tab_theme.place(x=5, y=5)
+        self.violet_theme.pack(pady=5)
+        self.midnight_theme.pack(pady=5)
+        self.lavender_theme.pack(pady=5)
+        self.marsh_theme.pack(pady=5)
+        self.breeze_theme.pack(pady=5)
+        self.red_theme.pack(pady=5)
+
         self.restart_message.place(x=455, y=340)
         self.main_frame.place(x=480, y=380)
         self.password_label.pack(anchor="n", padx=5, pady=2)
@@ -151,11 +152,6 @@ class MainWidow(ctk.CTk):
         self.btn_generate.pack(anchor="n", padx=5, pady=2)
         self.btn_copy.pack(anchor="n", padx=5, pady=2)
 
-        # # # Фрейм истории # # #
-        self.frame_history = ctk.CTkScrollableFrame(master=self, height=465, width=275)
-        self.label_history = ctk.CTkLabel(master=self.frame_history, text="")
-
-        # Размещение всех объектов в фрейме истории
         self.frame_history.place(x=5, y=430)
         self.label_history.pack(anchor="n")
 
