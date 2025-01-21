@@ -125,6 +125,16 @@ class MainWidow(ctk.CTk):
             text="Нажмите на Генерировать пароль"
         )
 
+        # Добавляем индикатор силы пароля
+        self.strength_label = ctk.CTkLabel(
+            master=self.main_frame,
+            text="Надежность пароля: -"
+        )
+        self.strength_progress = ctk.CTkProgressBar(
+            master=self.main_frame,
+            width=200
+        )
+
         # # # Фрейм истории # # #
         self.frame_history = ctk.CTkScrollableFrame(master=self, height=465, width=275)
         self.label_history = ctk.CTkLabel(master=self.frame_history, text="")
@@ -155,6 +165,11 @@ class MainWidow(ctk.CTk):
         self.frame_history.place(x=5, y=430)
         self.label_history.pack(anchor="n")
 
+        # Размещаем новые элементы
+        self.strength_label.pack(anchor="n", padx=5, pady=2)
+        self.strength_progress.pack(anchor="n", padx=5, pady=2)
+        self.strength_progress.set(0)
+
 
     def update_option(self) -> None:
         # Обновить настройки
@@ -181,6 +196,11 @@ class MainWidow(ctk.CTk):
             self.cache_history += "\n" + self.password
             self.password_label.configure(text=self.password)
             self.label_history.configure(text=self.cache_history)
+            
+            # Оцениваем надежность пароля
+            strength = self._calculate_password_strength()
+            self.strength_label.configure(text=f"Надежность пароля: {strength[0]}")
+            self.strength_progress.set(strength[1])
         else:
             self.password_label.configure(text="Максимальное значение: 30")
 
@@ -214,3 +234,30 @@ class MainWidow(ctk.CTk):
             write.write(json.dumps(temp_dict, indent=4))
         
         self.restart_message.configure(False, text="Перезапустите приложение для смены темы")
+
+    def _calculate_password_strength(self) -> tuple[str, float]:
+        """Оценивает надежность пароля и возвращает (описание, значение от 0 до 1)"""
+        score = 0
+        
+        # Длина
+        if len(self.password) >= 12:
+            score += 0.3
+        elif len(self.password) >= 8:
+            score += 0.2
+        else:
+            score += 0.1
+            
+        # Разные типы символов
+        if self.is_uppercase:
+            score += 0.2
+        if self.is_digits:
+            score += 0.2
+        if self.is_special_symbols:
+            score += 0.3
+            
+        if score >= 0.8:
+            return "Надежный", score
+        elif score >= 0.5:
+            return "Средний", score
+        else:
+            return "Слабый", score
