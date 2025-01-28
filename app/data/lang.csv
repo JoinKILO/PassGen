@@ -1,19 +1,19 @@
-keys;ru;eng
-GEN-BTN;������������ ������;Generate a password
-PASS-LBL;������� �� ������������ ������;Press to generate a password 
-COPY-PASS;����������� ������;Copy password
-PASS-STRH;���������� ������;Password strength
-PASS-LEN;������ ������;Password length
-CHG-THEME;����� ����;Change theme
-OPTIONS;�����;Options
-SET-ATTRIB;������ ��������;Set attributes
-PURPLE;����������;Purple
-MIDNIGHT;�������;Midnight
-LAVAND;�������;Lavender
-RED;�������;Red
-MARSH;����;Marsh
-BREEZE;����;Breeze
-WEAK;������;Weak
-NORMAL;�������;Normal
-STRENGTH;��������;Strength
-RES-MSG;������������� ���������� ��� ����� ������;Please restart the app
+keys,ru,eng
+GEN-BTN,Генерировать пароль,Generate a password
+PASS-LBL,Нажмите на генерировать пароль,Press to generate a password
+COPY-PASS,Копировать пароль,Copy password
+PASS-STRH,Надежность пароля,Password strength
+PASS-LEN,Длинна пароля,Password length
+CHG-THEME,Смена темы,Change theme
+OPTIONS,Опции,Options
+SET-ATTRIB,Задать атрибуты,Set attributes
+PURPLE,Фиолетовый,Purple
+MIDNIGHT,Полночь,Midnight
+LAVAND,Лаванда,Lavender
+RED,Красный,Red
+MARSH,Марш,Marsh
+BREEZE,Бриз,Breeze
+WEAK,Слабый,Weak
+NORMAL,Средний,Normal
+STRENGTH,Надежный,Strength
+RES-MSG,Перезапустите приложение для смены темы,Please restart the app
