@@ -1,0 +1,19 @@
+keys;ru;eng
+GEN-BTN;������������ ������;Generate a password
+PASS-LBL;������� �� ������������ ������;Press to generate a password 
+COPY-PASS;����������� ������;Copy password
+PASS-STRH;���������� ������;Password strength
+PASS-LEN;������ ������;Password length
+CHG-THEME;����� ����;Change theme
+OPTIONS;�����;Options
+SET-ATTRIB;������ ��������;Set attributes
+PURPLE;����������;Purple
+MIDNIGHT;�������;Midnight
+LAVAND;�������;Lavender
+RED;�������;Red
+MARSH;����;Marsh
+BREEZE;����;Breeze
+WEAK;������;Weak
+NORMAL;�������;Normal
+STRENGTH;��������;Strength
+RES-MSG;������������� ���������� ��� ����� ������;Please restart the app
