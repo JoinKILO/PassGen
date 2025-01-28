@@ -6,6 +6,9 @@ import json
 
 
 class MainWidow(ctk.CTk):
+    """
+    Главное окно приложения
+    """
     config = DefaultSettings()
     settings: dict = config.get_settings()
     alphabet: str = string.ascii_lowercase
@@ -22,6 +25,7 @@ class MainWidow(ctk.CTk):
 
         self.resizable(width=False, height=False)
 
+        
         # # # Главное окно и вкладка опций # # #
         ctk.set_default_color_theme(self.settings["theme"])
         self.iconbitmap(self.settings["icon"])
@@ -29,6 +33,7 @@ class MainWidow(ctk.CTk):
         self.title(self.settings["title"])
         self._set_appearance_mode(self.settings["appearance_mode"])
 
+        # region Инициализация UI
         # Создание вкладки опций
         self.tab_option = ctk.CTkTabview(master=self, height=900)
         self.tab_option.add("Опции")
@@ -49,6 +54,10 @@ class MainWidow(ctk.CTk):
         self.switch_special_symbols = ctk.CTkSwitch(
             master=self.tab_option.tab("Опции"), text="!-]", 
             command=self.update_option
+        )
+        self.language = ctk.CTkOptionMenu(
+            master=self.tab_option.tab("Опции"),
+            values=['Русский', 'English']
         )
 
         # # # Вкладка смены темы # # #
@@ -138,13 +147,16 @@ class MainWidow(ctk.CTk):
         # # # Фрейм истории # # #
         self.frame_history = ctk.CTkScrollableFrame(master=self, height=465, width=275)
         self.label_history = ctk.CTkLabel(master=self.frame_history, text="")
+        # endregion
 
+        # region Размещение UI
         # Размещение всех объектов в приложении
         self.tab_option.place(x=933, y=5)
         self.option_label.pack(anchor="n")
         self.switch_special_symbols.pack(anchor="w")
         self.switch_digits.pack(anchor="w")
         self.switch_uppercase.pack(anchor="w")
+        self.language.pack()
 
         self.tab_theme.place(x=5, y=5)
         self.violet_theme.pack(pady=5)
@@ -165,21 +177,24 @@ class MainWidow(ctk.CTk):
         self.frame_history.place(x=5, y=430)
         self.label_history.pack(anchor="n")
 
-        # Размещаем новые элементы
         self.strength_label.pack(anchor="n", padx=5, pady=2)
         self.strength_progress.pack(anchor="n", padx=5, pady=2)
         self.strength_progress.set(0)
-
+        # endregion
 
     def update_option(self) -> None:
-        # Обновить настройки
+        """
+        Обновление настроек в зависимости от выбора пользователя
+        """
         self.is_uppercase = self.switch_uppercase.get()
         self.is_digits = self.switch_digits.get()
         self.is_special_symbols = self.switch_special_symbols.get()
 
-
-    # Генерировать пароль
+    
     def on_generate_pressed(self) -> None:
+        """
+        Генерация пароля в зависимости от выбора пользователя
+        """
         alphabet = list(string.ascii_lowercase)
 
         if self.is_uppercase:
@@ -205,25 +220,28 @@ class MainWidow(ctk.CTk):
             self.password_label.configure(text="Максимальное значение: 30")
 
 
-    # Скопировать пароль в буфер обмена
     def on_copy_pressed(self) -> None:
+        """
+        Копирование пароля в буфер обмена
+        """
         self.clipboard_clear()  # Очистка необходима, чтобы пароль не сливался с предыдущим
         self.clipboard_append(self.password)
 
 
-    # Установить длину пароля
-    def get_length_password(self) -> int:
-        return round(int(self.slider_length_password.get()))
-
-
-    # Обновить метку при изменении значения ползунка
     def update_password_length_slider(self, _) -> None:
+        """
+        Обновление метки при изменении значения ползунка
+        """
         self.label_password_length.configure(
             text=f"Длина пароля: {round(int(self.slider_length_password.get()))}"
         )
     
-    
-    def change_theme(self, theme_name: str):
+
+    def change_theme(self, theme_name: str) -> None:
+        """
+        Смена темы приложения в зависимости от выбора пользователя,
+        сохранение новой темы в файл настроек и перезапуск приложения
+        """
         temp_dict: dict = {}
         with open(self.config.get_file_path(), "r") as read:
             temp_dict = json.load(read)
@@ -234,6 +252,14 @@ class MainWidow(ctk.CTk):
             write.write(json.dumps(temp_dict, indent=4))
         
         self.restart_message.configure(False, text="Перезапустите приложение для смены темы")
+
+
+    def get_length_password(self) -> int:
+        """
+        Возвращает значение длины пароля, которое установлено пользователем
+        """
+        return round(int(self.slider_length_password.get()))
+
 
     def _calculate_password_strength(self) -> tuple[str, float]:
         """Оценивает надежность пароля и возвращает (описание, значение от 0 до 1)"""
