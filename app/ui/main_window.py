@@ -3,36 +3,41 @@ from random import choice
 from app.start import DefaultSettings
 import string
 import json
+import re
+from typing import Tuple
 
 
 class MainWidow(ctk.CTk):
     """
     Главное окно приложения
     """
+    # region Поля класса
     config = DefaultSettings()
     settings: dict = config.get_settings()
     alphabet: str = string.ascii_lowercase
     length_password: int = 15
     password: str = ""
     cache_history: str = ""
-    is_special_symbols: bool = False
-    is_digits: bool = False
-    is_uppercase: bool = False
+    is_uppercase = False
+    is_digits = False
+    is_special_symbols = False
+    #endregion
 
 
     def __init__(self) -> None:
         super().__init__()
 
-        self.resizable(width=False, height=False)
+        self.resizable(width=False, height=False) # Запрет на resize окна
 
-        
+        # region Установка настроек приложения
         # # # Главное окно и вкладка опций # # #
         ctk.set_default_color_theme(self.settings["theme"])
         self.iconbitmap(self.settings["icon"])
         self.geometry(self.settings["geometry"])
         self.title(self.settings["title"])
         self._set_appearance_mode(self.settings["appearance_mode"])
-
+        #endregion
+        
         # region Инициализация UI
         # Создание вкладки опций
         self.tab_option = ctk.CTkTabview(master=self, height=900)
@@ -54,10 +59,6 @@ class MainWidow(ctk.CTk):
         self.switch_special_symbols = ctk.CTkSwitch(
             master=self.tab_option.tab("Опции"), text="!-]", 
             command=self.update_option
-        )
-        self.language = ctk.CTkOptionMenu(
-            master=self.tab_option.tab("Опции"),
-            values=['Русский', 'English']
         )
 
         # # # Вкладка смены темы # # #
@@ -156,7 +157,6 @@ class MainWidow(ctk.CTk):
         self.switch_special_symbols.pack(anchor="w")
         self.switch_digits.pack(anchor="w")
         self.switch_uppercase.pack(anchor="w")
-        self.language.pack()
 
         self.tab_theme.place(x=5, y=5)
         self.violet_theme.pack(pady=5)
@@ -181,6 +181,7 @@ class MainWidow(ctk.CTk):
         self.strength_progress.pack(anchor="n", padx=5, pady=2)
         self.strength_progress.set(0)
         # endregion
+
 
     def update_option(self) -> None:
         """
@@ -262,8 +263,14 @@ class MainWidow(ctk.CTk):
 
 
     def _calculate_password_strength(self) -> tuple[str, float]:
-        """Оценивает надежность пароля и возвращает (описание, значение от 0 до 1)"""
+        """Высчитывает надежность пароля
+
+        Returns:
+            tuple[str, float]: Description, strength
+        """
         score = 0
+        score = max(0, min(score, 1)) #Ограничение score в пределах от 0 до 1
+        unique_chars = len(set(self.password))
         
         # Длина
         if len(self.password) >= 12:
@@ -274,16 +281,64 @@ class MainWidow(ctk.CTk):
             score += 0.1
             
         # Разные типы символов
-        if self.is_uppercase:
+        if re.search(r'[A-Z]', self.password):
             score += 0.2
-        if self.is_digits:
+        if re.search(r'[a-z]', self.password):
+            score += 0.1
+        if re.search(r'[0-9]', self.password):
             score += 0.2
-        if self.is_special_symbols:
+        if re.search(r'[^A-Za-z0-9]', self.password):
             score += 0.3
-            
-        if score >= 0.8:
+        
+        # Проверка на энтропию
+        if unique_chars / len(self.password) >= 0.8:
+            score += 0.2
+        
+        # Проверка на последовательность
+        if self._has_sequences:
+            score -= 0.2
+        
+        # Проверка на повторяющиеся символы
+        if self._has_repeated_chars:
+            score -= 0.2
+        
+        if score >= 0.9:
+            return "Очень Надежный", score
+        elif score >= 0.7:
             return "Надежный", score
         elif score >= 0.5:
             return "Средний", score
         else:
             return "Слабый", score
+
+
+    def _has_sequences(self) -> bool:
+        """Проверка на наличие последовательностей
+        
+        Returns:
+            bool: Is Sequence
+        """
+        sequences = [
+            '0123456789',
+            'abcdefghijklmnoprstuvwxyz',
+            'quertyuiop',
+            'asdfghjkl',
+            'zxcvbnm'
+        ]
+        password_lower = self.password.lower()
+        for seq in sequences:
+            if seq in password_lower or seq[::-1] in password_lower:
+                return True
+        return False
+
+
+    def _has_repeated_chars(self) -> bool:
+        """Проверка на повторяющиеся символы
+
+        Returns:
+            bool: Is repeated
+        """
+        for i in range(len(self.password) - 3):
+            if self.password[i] == self.password[i + 1]:
+                return True
+        return False

@@ -116,3 +116,6 @@ dmypy.json
 .pyre/
 
 # End of standard Python .gitignore
+
+# Plugins files
+cspell.json
