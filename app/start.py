@@ -11,11 +11,14 @@ class DefaultSettings:
     file_path = "app/data/config.json"
     
     def get_settings(self) -> dict:
+        """
+        Возвращает словарь с параметрами из файла
+        """
         if os.path.exists(self.file_path):
             with open(self.file_path, "r") as read:
                 settings = json.load(read)
             
-            if len(settings) < 5:
+            if len(settings) < 6:
                 settings = self._reset_settings()
         else:
             settings = self._reset_settings()
@@ -23,14 +26,17 @@ class DefaultSettings:
         return settings
             
     
-    # Сброс значений по умолчанию
     def _reset_settings(self) -> dict:
+        """
+        Сброс значений по умолчанию
+        """
         default_settings = {
             "title": "PASSGEN - Генератор паролей",
             "geometry": "1240x920",
             "theme": "app/assets/themes/lavender.json",
             "icon": "app/assets/images/icon.ico",
-            "appearance_mode": "dark"
+            "appearance_mode": "dark",
+            "language": "ru"
         }
         
         with open(self.file_path, "w") as write:
@@ -40,4 +46,7 @@ class DefaultSettings:
     
     
     def get_file_path(self) -> str:
+        """
+        Возвращает путь к файлу настроек
+        """
         return self.file_path

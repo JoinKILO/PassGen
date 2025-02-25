@@ -24,6 +24,7 @@ wheels/
 .installed.cfg
 *.egg
 .vscode
+exportConfig.json
 
 # PyInstaller
 # Usually these files are written by a python script from a template
@@ -115,3 +116,6 @@ dmypy.json
 .pyre/
 
 # End of standard Python .gitignore
+
+# Plugins files
+cspell.json
